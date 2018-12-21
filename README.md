@@ -1,29 +1,17 @@
 # OnlineBookStore
-
-## Project setup
-```
+## 安装依赖
+```bash
 npm install
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
+## 前端
+```bash
+#热重载，开发模式
+npm run serve 
+#生产环境
 npm run build
 ```
-
-### Run your tests
+## 后端
+```bash
+#热重载 后端需先手动运行一次 npm run build
+npm start
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

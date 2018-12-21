@@ -3,8 +3,13 @@
 const router = require('koa-router')()
 
 router
-    .get('/', async (ctx) => {
-        await ctx.render('./index');
+    .prefix('/hello')
+    .get('/', async ({response}) => {
+        response.body={
+            msg:'success',
+            name:'zk'
+        }
+        
     })
 
-export default router
+module.exports= router
