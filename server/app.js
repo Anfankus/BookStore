@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
-import Koa from 'koa';
+const Koa =require ('koa');
 const app = new Koa()
-import json from 'koa-json';
-import onerror from 'koa-onerror';
-import bodyParser from 'koa-bodyparser';
-import logger from 'koa-logger';
+const json =require ('koa-json');
+const onerror =require ('koa-onerror');
+const bodyParser =require ('koa-bodyparser');
+const logger =require ('koa-logger');
+const path=require('path')
+const hello =require ('./api/hello');
 
-import hello from './api/hello';
 // error handler
 onerror(app)
 // middleWares
@@ -15,13 +16,13 @@ app.use(bodyParser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'));
+app.use(require('koa-static')(path.resolve(__dirname, '..','dist')));
 
 // router
-app.use(hello.routes(), hello.allowedMethods());
+app.use(hello.routes(), hello.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
-export default app
+module.exports= app
