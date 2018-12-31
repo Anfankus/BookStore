@@ -1,0 +1,111 @@
+<template>
+<b-container class="bookContainer mt-5 shadow">
+  <b-row>
+    <b-col v-if="!ready">加载中</b-col>
+    <b-col v-else>
+      <b-row class="header text-light py-2">
+        <b-col col>
+          <div>图书信息</div>
+        </b-col>
+      </b-row>
+      <b-row class="content py-3">
+        <b-col cols="5">
+          <b-img src="//picsum.photos/400/450/?image=15" fluid alt="Responsive image"/>
+        </b-col>
+        <b-col col>
+          <b-row class="text-left py-3 border-bottom mb-3">
+            <b-col><h3>{{book.name}}</h3></b-col>
+          </b-row>
+          <b-row id="basis" class="py-3 text-left py-3 border-bottom mb-3">
+            <b-col col>作者</b-col>
+            <b-col col>{{author}}</b-col>
+            <div class="w-100"/>
+            <b-col col>价格</b-col>
+            <b-col col class="text-primary">￥{{book.price}}</b-col>
+          </b-row>
+          <b-row class="mb-3">
+            <b-col class="text-left">
+              <span>数量</span>
+            </b-col>
+            <b-col>
+              <b-input-group>
+                <b-button class="little-btn" size="sm" :disabled="count<=0" @click="count--">-</b-button>
+                <span style="width:2rem">{{count}}</span>
+                <b-button class="little-btn" size="sm"  @click="count++">+</b-button>
+              </b-input-group>
+            </b-col>
+            <div class="w-100 my-1"/>
+            <b-col class="text-left">
+              <span>总金额</span>
+            </b-col>
+            <b-col class="text-left text-primary">
+              ￥{{total}}
+            </b-col>
+          </b-row>
+          <b-row class="">
+            <b-col cols="6">
+              <b-btn style="width:100%" variant="success">添加至购物车</b-btn>
+            </b-col>
+          </b-row>
+        </b-col>
+      </b-row>
+    </b-col>
+  </b-row>
+</b-container>
+</template>
+<script>
+export default {
+  props:['id'],
+  data(){
+    return{
+      ready:false,
+      tags:{
+        name:'书名',
+        price:'单价',
+        quantity:'库存数量'
+      },
+      book:{
+        name:'这是啥',
+        price:14,
+        quantity:1
+      },
+      count:0
+    }
+  },
+  computed:{
+    total(){
+      return this.count*this.book.price;
+    }
+  },
+  methods:{
+    async updateInfo(){
+      await setTimeout(()=>{this.id=30;this.ready=true},1000)
+    }
+  },
+  mounted(){
+    this.updateInfo();
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.ready=false;
+    this.updateInfo();
+    next();
+  }
+}
+</script>
+<style lang="less">
+.bookContainer{
+  border-radius: 8px;
+  .header{
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-color: #555;
+    font-size: 2rem;
+  }
+  .content{
+    background-color: #efefef22;
+  }
+  #basis{
+    font-size: 1.4rem;
+  }
+}
+</style>
