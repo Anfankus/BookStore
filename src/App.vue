@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="primary" class="shadow">
+    <b-navbar toggleable="md" type="dark" variant="primary" class="shadow nav_head">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-navbar-brand to="/" class="ml-5">网上书店</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
@@ -21,9 +21,19 @@
             <b-dropdown-item href="#">个人信息</b-dropdown-item>
             <b-dropdown-item href="#">购物车</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-btn size="sm"
+          class="ml-1 mr-1" 
+          @click="showCart=!showCart" 
+          variant="warning text-white">
+          购物车
+            <b-badge variant="light">{{$store.state.items.length}}</b-badge>
+          </b-btn>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <transition name="slide-fade">
+      <cart v-show="showCart" class="cart shadow"/>
+    </transition>
     <div class="wrapper">
       <router-view />
     </div>
@@ -32,10 +42,11 @@
 
 <script>
 import Cookies from 'js-cookie'
-
+import Cart from '@/components/Cart'
 export default {
   data(){
     return{
+      showCart:false
     }
   },
   computed:{
@@ -46,7 +57,11 @@ export default {
       else{
         return false;
       }
-    }
+    },
+    
+  },
+  components:{
+    cart:Cart
   }
 }
 </script>
@@ -59,8 +74,35 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-width: 512px;
+  min-height: 100vh;
+}
+.nav_head{
+  height:4rem;
+  position: fixed!important;
+  width: 100%;
+  z-index: 3;
 }
 .wrapper{
-  margin: 1.5rem;
+  padding-top: 4rem!important;
+}
+.cart{
+  position: fixed;
+  z-index: 3;
+  right:  0;
+  top:5rem;
+  width:40rem!important;
+  border:white solid;
+  border-radius: 8px!important;
+}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to{
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

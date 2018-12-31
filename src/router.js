@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
-
+import Book from './views/BooksInfo.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -26,7 +26,11 @@ export default new Router({
       path:'/signup',
       name:'signUp',
       component:SignUp
-
+    },{
+      path:'/book/:id',
+      name:'book',
+      props:true,
+      component:Book
     }
   ]
 })
