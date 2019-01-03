@@ -1,23 +1,15 @@
 /* eslint-disable no-debugger */
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    items:[{
-      id:1,
-      name:'这是啥',
-      price:14,
-      quantity:1
-    },{
-      id:2,
-      name:'这是啥',
-      price:15,
-      quantity:2
-    }],
-    checkOutStatus:null
+    items:[],
+    checkOutStatus:null,
+    msg:null
   },
   getters:{
     cartTotal(state){
@@ -27,15 +19,15 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    pushProductToCart (state, { id , name}) {
-      state.items.push({id,name,quantity: 1})
+    pushProductToCart (state, { bookid , bookname, price , quantity}) {
+      state.items.push({bookid,bookname,price,quantity})
     },
-    incrementItemQuantity (state,  id ) {
-      const cartItem = state.items.find(item => item.id === id)
+    incrementItemQuantity (state,  bookid ) {
+      const cartItem = state.items.find(item => item.bookid === bookid)
       cartItem.quantity++
     },
-    decrementItemQuantity (state,  id ) {
-      const cartItem = state.items.find(item => item.id === id)
+    decrementItemQuantity (state,  bookid ) {
+      const cartItem = state.items.find(item => item.bookid === bookid)
       if(cartItem.quantity>0){
         cartItem.quantity--
       }
@@ -43,18 +35,29 @@ export default new Vuex.Store({
     setCheckoutStatus(state,status){
       state.checkOutStatus=status;
     },
+    setMsg(state,msg){
+      state.msg=msg;
+    },
     setCartItems(state,{items}){
       state.items=items;
     }
   },
   actions: {
-    async checkout ({ commit, state }) {
-      const savedCartItems = [...state.items]
-      commit('setCheckoutStatus', null)
-      commit('setCartItems', { items: [] })
-
-      commit('setCartItems', { items: savedCartItems })
-      //购物
+    async checkout ({ commit, state , getters}) {
+      const savedCartItems = [...state.items];
+      const total=getters.cartTotal;
+      commit('setCheckoutStatus', null);
+      commit('setMsg',null);
+      commit('setCartItems', { items: [] });
+      let ret =await axios.post('/checkout',{
+        order:savedCartItems,
+        total
+      });
+      commit('setCheckoutStatus',true);
+      commit('setMsg',ret.msg);
+      if(!ret.result){
+        commit('setCartItems', { items: savedCartItems });
+      }
     }
   }
 })

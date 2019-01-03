@@ -26,7 +26,7 @@
         <h5 class="text-right pr-2">合计:<strong>{{total}}</strong>元</h5>
         <b-form-row class="mt-2">
         <b-col>
-          <b-button block v-bind:class="{enable:checkoutStatus}" variant="success">结算</b-button>
+          <b-button block v-bind:class="{enable:checkoutStatus}" @click="checkout" variant="success">结算</b-button>
         </b-col><b-col>
           <b-button block v-bind:class="{enable:items}" @click="clearAll" variant="outline-danger">清空</b-button>
         </b-col>
@@ -42,8 +42,8 @@ export default {
         return{
             fields:[
                 {key:'index',label:'序号'},
-                {key:'name',label:'书名'},
-                {key:'id',label:'书籍编号'},
+                {key:'bookname',label:'书名'},
+                {key:'bookid',label:'书籍编号'},
                 {key:'price',label:'单价',sortable:true},
                 {key:'quantity',label:'数量',sortable:true},
                 {key:'total',label:'总价'}

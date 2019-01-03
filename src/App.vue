@@ -10,17 +10,17 @@
           <b-nav-item href="#">联系我们</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="搜索图书"/>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">搜索</b-button>
+          <b-nav-form >
+            <b-form-input size="sm" class="mr-sm-2" v-model="input" type="text" placeholder="搜索图书"/>
+            <b-button size="sm" class="my-2 my-sm-0" @click="emitSearch">搜索</b-button>
           </b-nav-form>
-          <b-button size="sm" class="ml-1 mr-1" to="/signIn" v-show="!ifLogin">登陆</b-button>
-          <b-button size="sm" to="/signUp" v-show="!ifLogin">注册</b-button>
-          <b-nav-item-dropdown right v-show="ifLogin">
+          <b-button size="sm" class="mx-1" to="/signIn" v-if="!ifLogin">登陆</b-button>
+          <b-button size="sm" class="mx-1" to="/signUp" v-if="!ifLogin">注册</b-button>
+          <b-dd size="sm" class="mx-1" right v-if="ifLogin&&false">
             <template slot="button-content">我的</template>
             <b-dropdown-item href="#">个人信息</b-dropdown-item>
             <b-dropdown-item href="#">购物车</b-dropdown-item>
-          </b-nav-item-dropdown>
+          </b-dd>
           <b-btn size="sm"
           class="ml-1 mr-1" 
           @click="showCart=!showCart" 
@@ -31,11 +31,11 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <transition name="slide-fade">
+    <transition  name="slide-fade">
       <cart v-show="showCart" class="cart shadow"/>
     </transition>
     <div class="wrapper">
-      <router-view />
+      <router-view/>
     </div>
   </div>
 </template>
@@ -46,7 +46,8 @@ import Cart from '@/components/Cart'
 export default {
   data(){
     return{
-      showCart:false
+      showCart:false,
+      input:null
     }
   },
   computed:{
@@ -57,8 +58,17 @@ export default {
       else{
         return false;
       }
-    },
-    
+    }
+  },
+  methods:{
+    emitSearch(){
+      if(!this.input)
+        return;
+      this.$eventHub.$emit('search',{
+        type:'bookname',
+        input:this.input
+      })
+    }
   },
   components:{
     cart:Cart
