@@ -31,6 +31,7 @@
 </template>
 <script>
 import Cookies from 'js-cookie';
+import axios from 'axios'
 export default {
     data(){
         return{
@@ -56,13 +57,20 @@ export default {
             evt.preventDefault();
             if(!this.checkFormat()){
               this.result={
-                ret:false,
+                result:false,
                 msg:'用户名或密码格式有误'
               }
               return;
             }
-            Cookies.set('user',this.form.username,{path:'/'});
-            location.replace('/')
+            let ret=await axios.post('/signin',{
+                username:this.form.username,
+                password:this.form.password
+            });
+            this.result=ret.data;
+            if(this.result.result){
+              Cookies.set('user',this.form.username,{path:'/'});
+              location.replace('/')
+            }
         }
     }
 }

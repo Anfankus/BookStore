@@ -8,7 +8,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css"
 
 Vue.config.productionTip = false
 Vue.use(bootstrap);
-
+Vue.prototype.$eventHub= Vue.prototype.$eventHub ||  new Vue();
 new Vue({
   router,
   store,

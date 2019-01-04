@@ -44,7 +44,7 @@
           </b-row>
           <b-row class="">
             <b-col cols="6">
-              <b-btn style="width:100%" variant="success">添加至购物车</b-btn>
+              <b-btn style="width:100%" @click="addToCart" variant="success">添加至购物车</b-btn>
             </b-col>
           </b-row>
         </b-col>
@@ -54,21 +54,13 @@
 </b-container>
 </template>
 <script>
+import axios from 'axios';
 export default {
   props:['id'],
   data(){
     return{
       ready:false,
-      tags:{
-        name:'书名',
-        price:'单价',
-        quantity:'库存数量'
-      },
-      book:{
-        name:'这是啥',
-        price:14,
-        quantity:1
-      },
+      book:null,
       count:0
     }
   },
@@ -79,7 +71,19 @@ export default {
   },
   methods:{
     async updateInfo(){
-      await setTimeout(()=>{this.id=30;this.ready=true},1000)
+      let result=await axios.get('/book',{
+        params:{
+          bookid:this.id
+        }
+      });
+      if(result.data.result){
+        this.book=result;
+        this.ready=true;
+      }
+    },
+    addToCart(){
+      let {id:bookid,bookname,price,quantity}=this.book;
+      this.$store.commit('pushProductToCart',{bookid,bookname,price,quantity});
     }
   },
   mounted(){

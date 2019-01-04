@@ -15,7 +15,7 @@
                 {{value}}
               </b-dd-item>
             </b-dd>
-            <b-btn variant="success" @click="search">查找</b-btn>
+            <b-btn variant="success" @click="search()">查找</b-btn>
           </b-input-group-append>
         </b-input-group>
       </div>
@@ -23,8 +23,8 @@
         <b>热门搜索：著名作家 张可 文学家</b>
       </div>
     </div>
-    <b-container id="results" class="mt-3">
-      <b-row class="">
+    <b-container v-if="datas.books.length" id="results" class="mt-3">
+      <b-row >
         <b-col col offset=1>
           <h4 class="text-left">{{list[type]}}是<b>{{input}}</b>的搜索结果</h4>
         </b-col>
@@ -77,30 +77,28 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  mounted(){
+    this.$eventHub.$on('search',this.search)
+  },
   data(){
     return{
       input:null,
-      type:'name',
+      type:'bookname',
       list:{
         author:'作者',
-        name:'书名',
-        id:'编号'
+        bookname:'书名',
+        bookid:'编号'
       },
       datas:{
         page:1,
-        totalPage:5,
-        books:[{
-          id:1,
-          name:'这是啥',
-          author:'张可',
-          price:14,
-          quantity:1
-          }]
+        totalPage:1,
+        books:[]
         },
       fields:[
         {key:'index',label:'序号'},
-        {key:'name',label:'书名'},
+        {key:'bookname',label:'书名'},
         {key:'author',label:'作者'},
         {key:'price',label:'单价'}
       ]
@@ -112,7 +110,21 @@ export default {
     }
   },
   methods:{
-    search(){
+    async search(para){
+      let input=this.input,type=this.type;
+      if(para){
+        input=para.input;
+        type=para.type;
+      }
+      if(!input){
+        return;
+      }
+      let ret=await axios.get('/search',{
+        params:{
+          [type]:input
+        }
+      })
+      this.datas.books=ret.data;
     },
     jumpTo(page){
      return page+1;

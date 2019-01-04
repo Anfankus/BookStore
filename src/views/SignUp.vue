@@ -27,9 +27,9 @@
                     </b-form-invalid-feedback>
                 </b-form-group>
                 <div v-if="result">
-                  <b-alert style="height:2rem" :variant="result.ret?'success':'danger'" show>
+                  <b-alert style="height:2rem" :variant="result.result?'success':'danger'" show>
                     <p style="position:relative;top:-0.3rem;font-size:0.8rem">
-                      注册{{result.ret?'成功':'失败'}}:
+                      注册{{result.result?'成功':'失败'}}:
                       <b>{{result.msg}}</b>
                     </p>
                   </b-alert>
@@ -47,6 +47,7 @@
 
 </template>
 <script>
+import axios from 'axios';
 export default {
     data(){
         return{
@@ -87,7 +88,15 @@ export default {
               }
               return;
             }
-            location.replace('/')
+            let ret=await axios.post('/signup',{
+              username:this.form.username,
+              password:this.form.password,
+              email:this.form.email
+            });
+            this.result=ret.data;
+            if(this.result.result){
+              location.replace('/')
+            }
         }
     }
 }
