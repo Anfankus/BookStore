@@ -185,7 +185,7 @@ function handleBookOrders(user, item) {
                 resolve(false);
             }
             else {
-                var addSql = `INSERT INTO bookorder(oid,bid,amount) VALUES(?,?,?)`;
+                var addSql = `BEGIN;INSERT INTO bookorder(oid,bid,amount) VALUES(?,?,?);UPDATE bookInfo SET quantity=quantity-${item.quantity} WHERE bid=${item.bookid};COMMIT;`;
                 var addpara = [result[0].oid, item.bookid, item.quantity];
                 connection.query(addSql, addpara, function (err, result) {
                     if (err) {
