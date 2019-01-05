@@ -62,7 +62,7 @@ function signin(name) {
  */
 function signup(name, pw, email) {
     return new Promise(function(resolve, rejected) {
-        var addSql = 'INSERT INTO userinfo(username,password,email) VALUES(?,?,?)';
+        var addSql = 'INSERT INTO userInfo(username,password,email) VALUES(?,?,?)';
         var addSqlParams = [name, pw, email];
         connection.query(addSql, addSqlParams, function(err, result) {
             if (err) {
