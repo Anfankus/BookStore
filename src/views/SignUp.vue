@@ -95,7 +95,10 @@ export default {
             });
             this.result=ret.data;
             if(this.result.result){
-              location.replace('/')
+              this.result.result+=",页面将在3秒后跳转至登录页"
+              setTimeout(() => {
+                location.replace('/signin')
+              }, 200);
             }
         }
     }

@@ -11,16 +11,17 @@
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-form >
-            <b-form-input size="sm" class="mr-sm-2" v-model="input" type="text" placeholder="搜索图书"/>
-            <b-button size="sm" class="my-2 my-sm-0" @click="emitSearch">搜索</b-button>
+            <b-input-group size="sm" >
+                <b-form-input size="sm" v-model="input" type="text" placeholder="搜索图书"/>
+              <b-input-group-append>
+                <b-btn variant="success" @click="emitSearch">查找</b-btn>
+              </b-input-group-append>
+            </b-input-group>     
           </b-nav-form>
           <b-button size="sm" class="mx-1" to="/signIn" v-if="!ifLogin">登陆</b-button>
           <b-button size="sm" class="mx-1" to="/signUp" v-if="!ifLogin">注册</b-button>
-          <b-dd size="sm" class="mx-1" right v-if="ifLogin&&false">
-            <template slot="button-content">我的</template>
-            <b-dropdown-item href="#">个人信息</b-dropdown-item>
-            <b-dropdown-item href="#">购物车</b-dropdown-item>
-          </b-dd>
+          <b-button size="sm" class="mx-1" @click="logout" v-if="ifLogin">登出</b-button>
+          <b-button variant="danger" size="sm" class="mx-1" right v-if="ifLogin">{{username}}</b-button>
           <b-btn size="sm"
           class="ml-1 mr-1" 
           @click="showCart=!showCart" 
@@ -52,6 +53,9 @@ export default {
     }
   },
   computed:{
+    username(){
+      return Cookies.get('user');
+    },
     ifLogin(){
       if(Cookies.get('user')){
         return true;
@@ -69,6 +73,10 @@ export default {
         type:'bookname',
         input:this.input
       })
+    },
+    logout(){
+      Cookies.remove('user');
+      location.replace('/');
     }
   },
   components:{

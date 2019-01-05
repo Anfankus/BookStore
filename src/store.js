@@ -38,6 +38,7 @@ export default new Vuex.Store({
     },
     setMsg(state,msg){
       state.msg=msg;
+      setTimeout(()=>state.msg=null,5000);
     },
     setCartItems(state,{items}){
       state.items=items;
@@ -58,12 +59,19 @@ export default new Vuex.Store({
         username:user,
         order:savedCartItems.map(each=>{return{bookid:each.bookid,quantity:each.quantity}}),
         total
-      });
-      commit('setCheckoutStatus',true);
-      commit('setMsg',ret.data.msg);
-      if(!ret.data.result){
+      }).catch(()=>false);
+      if(!ret){
         commit('setCartItems', { items: savedCartItems });
         commit('setCheckoutStatus',false);
+        commit('setMsg','连接服务器错误');
+        return;
+      }else if(!ret.data.result){
+        commit('setCartItems', { items: savedCartItems });
+        commit('setCheckoutStatus',false);
+        commit('setMsg',ret.data.msg);
+      }else{
+        commit('setCheckoutStatus',true);
+        commit('setMsg',ret.data.msg);
       }
     }
   }

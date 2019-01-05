@@ -20,7 +20,7 @@
         </b-input-group>
       </div>
       <div id='bottom'>
-        <b>热门搜索：著名作家 张可 文学家</b>
+        <b>热门搜索：西游记 史记</b>
       </div>
     </div>
     <b-container v-if="datas.books.length" id="results" class="mt-3">
