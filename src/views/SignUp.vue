@@ -97,7 +97,7 @@ export default {
             if(this.result.result){
               this.result.result+=",页面将在3秒后跳转至登录页"
               setTimeout(function(){
-                this.$route.push('/signIn')
+                this.$router.push('/signIn')
               }, 200);
             }
         }

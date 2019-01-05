@@ -175,7 +175,7 @@ function handleBookOrders(user, item) {
         var sql = `SELECT oid FROM orders WHERE username='${user}'`;
         connection.query(sql, function (err, result) {
             if (err) {
-                console.log('[INSERT ERROR] - ', err.message);
+                console.log('[INSERT ERROR 2] - ', err);
                 resolve(false);
             } else {
                 for (var i = 0; i < item.length; i++) {
@@ -183,7 +183,7 @@ function handleBookOrders(user, item) {
                     var addpara = [result[0].oid, item[i].bookid, item[i].quantity];
                     connection.query(addSql, addpara, function (err, result) {
                         if (err) {
-                            console.log('[INSERT ERROR] - ', err.message);
+                            console.log('[INSERT ERROR 3] - ', err);
                             resolve(false);
                         }
                     });
@@ -206,7 +206,7 @@ function handleOrders(username, item, total) {
         let addpara1 = [username, total, date(), date(), 0];
         connection.query(addsql1, addpara1, function(err, result) {
             if (err) {
-                console.log('[INSERT ERROR] - ', err.message);
+                console.log('[INSERT ERROR 1] - ', err);
                 resolve(false);
             } else {
                 handleBookOrders(username, item).then(ret => {
