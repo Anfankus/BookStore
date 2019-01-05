@@ -14,18 +14,21 @@
         </b-col>
         <b-col col>
           <b-row class="text-left py-3 border-bottom mb-3">
-            <b-col><h3>{{book.name}}</h3></b-col>
+            <b-col><h3>{{book.bookname}}</h3></b-col>
           </b-row>
           <b-row id="basis" class="py-3 text-left py-3 border-bottom mb-3">
-            <b-col col>作者</b-col>
-            <b-col col>{{author}}</b-col>
+            <b-col col>作者:</b-col>
+            <b-col col>{{book.author}}</b-col>
             <div class="w-100"/>
-            <b-col col>价格</b-col>
+            <b-col col>类别:</b-col>
+            <b-col col>{{book.classname}}</b-col>
+            <div class="w-100"/>
+            <b-col col>价格:</b-col>
             <b-col col class="text-primary">￥{{book.price}}</b-col>
           </b-row>
           <b-row class="mb-3">
             <b-col class="text-left">
-              <span>数量</span>
+              <span>数量:</span>
             </b-col>
             <b-col>
               <b-input-group>
@@ -36,7 +39,7 @@
             </b-col>
             <div class="w-100 my-1"/>
             <b-col class="text-left">
-              <span>总金额</span>
+              <span>总金额:</span>
             </b-col>
             <b-col class="text-left text-primary">
               ￥{{total}}
@@ -76,13 +79,14 @@ export default {
           bookid:this.id
         }
       });
-      if(result.data.result){
-        this.book=result;
+      if(result.data){
+        this.book=result.data;
         this.ready=true;
       }
     },
     addToCart(){
-      let {id:bookid,bookname,price,quantity}=this.book;
+      let {bookid,bookname,price}=this.book;
+      let quantity=this.count;
       this.$store.commit('pushProductToCart',{bookid,bookname,price,quantity});
     }
   },

@@ -6,17 +6,17 @@
           <template slot="index" slot-scope="data">
               {{data.index+1}}
           </template>
-          <template slot="id" slot-scope="data">
+          <template slot="bookid" slot-scope="data">
               <b-link :to="{name:'book',params:{id:data.value}}">{{data.value}}</b-link>
           </template>
-          <template slot="name" slot-scope="data">
-              <b-link :to="{name:'book',params:{id:data.item.id}}">{{data.value}}</b-link>
+          <template slot="bookname" slot-scope="data">
+              <b-link :to="{name:'book',params:{id:data.item.bookid}}">{{data.value}}</b-link>
           </template>
           <template slot="quantity" slot-scope="data">
             <b-input-group>
-              <b-button class="little-btn" size="sm" slot="prepend" @click="add(data.item.id)">+</b-button>
+              <b-button class="little-btn" size="sm" slot="prepend" @click="add(data.item.bookid)">+</b-button>
               <span style="width:2rem">{{data.value}}</span>
-              <b-button class="little-btn" size="sm" slot="append" @click="substract(data.item.id)">-</b-button>
+              <b-button class="little-btn" size="sm" slot="append" @click="substract(data.item.bookid)">-</b-button>
             </b-input-group>
           </template>
           <template slot="total" slot-scope="data">

@@ -1,7 +1,8 @@
 /* eslint-disable no-debugger */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios'
+import axios from 'axios';
+import cookie from 'js-cookie';
 
 Vue.use(Vuex)
 
@@ -44,19 +45,25 @@ export default new Vuex.Store({
   },
   actions: {
     async checkout ({ commit, state , getters}) {
+      const user=cookie.get('user')
+      if(!user){
+        return;
+      }
       const savedCartItems = [...state.items];
       const total=getters.cartTotal;
       commit('setCheckoutStatus', null);
       commit('setMsg',null);
       commit('setCartItems', { items: [] });
       let ret =await axios.post('/checkout',{
-        order:savedCartItems,
+        username:user,
+        order:savedCartItems.map(each=>{return{bookid:each.bookid,quantity:each.quantity}}),
         total
       });
       commit('setCheckoutStatus',true);
       commit('setMsg',ret.data.msg);
       if(!ret.data.result){
         commit('setCartItems', { items: savedCartItems });
+        commit('setCheckoutStatus',false);
       }
     }
   }

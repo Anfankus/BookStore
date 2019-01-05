@@ -5,14 +5,11 @@ const database = require('../database')
 
 router
   .prefix('/book')
-  .get('/', async ({response}) => {
-    let {body}=response.request;
-    await database.searchBookInfo(body.bookid).then(real=>{
+  .get('/', async ({request,response}) => {
+    let {query}=request;
+    await database.searchBookInfo(query.bookid).then(real=>{
       if(real){
-        response.body={
-          result:true,
-          msg:'查询成功'
-        }
+        response.body=real;
       }else{
         response.body={
           result:false,

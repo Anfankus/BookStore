@@ -1,8 +1,9 @@
+/* eslint-disable no-debugger */
 var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '123456',
+    password: '',
     port: '3306',
     database: 'BookStore',
     multipleStatements: true
@@ -26,9 +27,7 @@ function Item() {
 
 //获取日期
 function date() {
-    var myDate = new Date();
-    var a = myDate.toLocaleDateString().split('/');
-    return a[2] + '-' + a[0] + '-' + a[1];
+    return new Date().toLocaleDateString()
 }
 
 /**
@@ -37,9 +36,9 @@ function date() {
  * 用户名不存在，返回0
  *  */
 function signin(name) {
-    return new Promise(function (resolve, rejected) {
+    return new Promise(function(resolve, rejected) {
         var sql = `SELECT password FROM userInfo WHERE username='${name}'`;
-        connection.query(sql, function (err, result) {
+        connection.query(sql, function(err, result) {
             if (err) {
                 console.log('[SELECT ERROR] - ', err.message);
                 rejected(err);
@@ -47,8 +46,7 @@ function signin(name) {
             if (result[0]) {
                 console.log(result[0]);
                 resolve(result[0].password);
-            }
-            else resolve(0);//用户名不存在
+            } else resolve(0); //用户名不存在
         });
     });
 }
@@ -59,15 +57,14 @@ function signin(name) {
  * 注册失败，返回false
  */
 function signup(name, pw, email) {
-    return new Promise(function (resolve, rejected) {
+    return new Promise(function(resolve, rejected) {
         var addSql = 'INSERT INTO userinfo(username,password,email) VALUES(?,?,?)';
         var addSqlParams = [name, pw, email];
-        connection.query(addSql, addSqlParams, function (err, result) {
+        connection.query(addSql, addSqlParams, function(err, result) {
             if (err) {
                 console.log('[INSERT ERROR] - ', err.message);
                 resolve(false);
-            }
-            else resolve(true);
+            } else resolve(true);
         });
     });
 }
@@ -81,72 +78,65 @@ function signup(name, pw, email) {
  * 上述如果搜索不到都是返回0
  *  */
 function search(type, content) {
-    return new Promise(function (resolve, rejected) {
+    return new Promise(function(resolve, rejected) {
         var array = [];
         switch (type) {
-            case 1://按照id查询
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bid=${content};`;
-                connection.query(sql, function (err, result) {
+            case 1: //按照id查询
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  bid=${content};`;
+                connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
                         rejected(err);
                     }
-                    if (result[0]) {
-                        array.push(new BookInfo(result[0]));
-                        resolve(array);
+                    for (var i = 0; i < (result.length); i++) {
+                        array.push(new BookInfo(result[i]));
                     }
-                    else resolve(0);//该id搜不到
+                    resolve(array);
                 });
                 break;
 
-            case 2://按照书名查询
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bname REGEXP '${content}';`;
-                connection.query(sql, function (err, result) {
+            case 2: //按照书名查询
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname
+                FROM bookInfo,classInfo
+                WHERE bookInfo.classid=classInfo.cid and bname REGEXP '${content}';`;
+                connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
                         rejected(err);
                     }
-                    for (var i = 0; i < (result.length) / 10; i++) {
-                        if (result[i]) {
-                            array.push(new BookInfo(result[i]));
-                            resolve(array);
-                        }
-                        else resolve(0);//查不到该书
+                    for (var i = 0; i < (result.length); i++) {
+                        array.push(new BookInfo(result[i]));
                     }
+                    resolve(array);
                 });
                 break;
 
-            case 3://
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE author REGEXP '${content}';`;
-                connection.query(sql, function (err, result) {
+            case 3: //
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname
+                FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and author REGEXP '${content}';`;
+                connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
                         rejected(err);
                     }
-                    for (var i = 0; i < (result.length) / 10; i++) {
-                        if (result[i]) {
-                            array.push(new BookInfo(result[i]));
-                            resolve(array);
-                        }
-                        else resolve(0);//查不到该书
+                    for (var i = 0; i < (result.length); i++) {
+                        array.push(new BookInfo(result[i]));
                     }
+                    resolve(array);
                 });
                 break;
 
             case 4:
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE classid='${content}';`;
-                connection.query(sql, function (err, result) {
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  classid='${content}';`;
+                connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
                         rejected(err);
                     }
-                    for (var i = 0; i < (result.length) / 10; i++) {
-                        if (result[i]) {
-                            array.push(new BookInfo(result[i]));
-                            resolve(array);
-                        }
-                        else resolve(0);//查不到该书
+                    for (var i = 0; i < (result.length); i++) {
+                        array.push(new BookInfo(result[i]));
                     }
+                    resolve(array);
                 });
                 break;
         }
@@ -159,17 +149,16 @@ function search(type, content) {
  * 查询失败返回0
  *  */
 function searchBookInfo(id) {
-    return new Promise(function (resolve, rejected) {
-        var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bid=${id};`;
-        connection.query(sql, function (err, result) {
+    return new Promise(function(resolve, rejected) {
+        var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and bid=${id};`;
+        connection.query(sql, function(err, result) {
             if (err) {
                 console.log('[SELECT ERROR] - ', err.message);
                 rejected(err);
             }
             if (result[0]) {
                 resolve(new BookInfo(result[0]));
-            }
-            else resolve(0);//查不到该书
+            } else resolve(0); //查不到该书
         });
     });
 }
@@ -177,22 +166,20 @@ function searchBookInfo(id) {
 
 //这个你不需要调用
 function handleBookOrders(user, item) {
-    return new Promise(function (resolve, rejected) {
+    return new Promise(function(resolve, rejected) {
         var sql = `SELECT oid FROM orders WHERE username='${user}'`;
-        connection.query(sql, function (err, result) {
+        connection.query(sql, function(err, result) {
             if (err) {
                 console.log('[INSERT ERROR] - ', err.message);
                 resolve(false);
-            }
-            else {
+            } else {
                 var addSql = `BEGIN;INSERT INTO bookorder(oid,bid,amount) VALUES(?,?,?);UPDATE bookInfo SET quantity=quantity-${item.quantity} WHERE bid=${item.bookid};COMMIT;`;
                 var addpara = [result[0].oid, item.bookid, item.quantity];
-                connection.query(addSql, addpara, function (err, result) {
+                connection.query(addSql, addpara, function(err, result) {
                     if (err) {
                         console.log('[INSERT ERROR] - ', err.message);
                         resolve(false);
-                    }
-                    else {
+                    } else {
                         resolve(true);
                     }
                 });
@@ -206,15 +193,14 @@ function handleBookOrders(user, item) {
  * 订单处理失败返回false
  *  */
 function handleOrders(username, item, total) {
-    return new Promise(function (resolve, rejected) {
+    return new Promise(function(resolve, rejected) {
         var addsql1 = `INSERT INTO orders(username,paymoney,deliverytime,arrivaltime,orderstatus) VALUES(?,?,?,?,?);`;
         var addpara1 = [username, total, date(), date(), 0];
-        connection.query(addsql1, addpara1, function (err, result) {
+        connection.query(addsql1, addpara1, function(err, result) {
             if (err) {
                 console.log('[INSERT ERROR] - ', err.message);
                 resolve(false);
-            }
-            else {
+            } else {
                 handleBookOrders(username, item).then(ret => {
                     if (ret)
                         resolve(true);
