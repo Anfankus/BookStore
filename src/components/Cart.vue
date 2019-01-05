@@ -24,6 +24,11 @@
           </template>
         </b-table>
         <h5 class="text-right pr-2">合计:<strong>{{total}}</strong>元</h5>
+        <transition name="slide-fade">
+          <b-alert  style="height:2rem" :variant="checkoutStatus?'success':'danger'" :show="msg">
+            <b style="position:relative;top:-0.6rem;font-size:0.8rem">{{msg}}</b>
+          </b-alert>
+        </transition>
         <b-form-row class="mt-2">
         <b-col>
           <b-button block v-bind:class="{enable:checkoutStatus}" variant="success">结算</b-button>
@@ -53,7 +58,8 @@ export default {
   computed: {
     ...mapState({
       items: state=>state.items,
-      checkoutStatus: state => state.checkoutStatus
+      checkoutStatus: state => state.checkoutStatus,
+      msg:state=>state.msg
     }),
     ...mapGetters({
       total: 'cartTotal',

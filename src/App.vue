@@ -51,6 +51,9 @@ export default {
     }
   },
   computed:{
+    username(){
+      return Cookies.get('user');
+    },
     ifLogin(){
       if(Cookies.get('user')){
         return true;
