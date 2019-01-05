@@ -8,7 +8,7 @@ router
   .prefix('/checkout')
   .post('/', async (ctx) => {
     let {body}=ctx.request;
-    await database.handleOrders(body.username,body.item,body.total).then(real=>{
+    await database.handleOrders(body.username,body.order,body.total).then(real=>{
       if(real===true){
         ctx.body={
           result:true,

@@ -26,7 +26,7 @@
     <b-container id="results" class="mt-3">
       <b-row class="">
         <b-col col offset=1>
-          <h4 class="text-left">{{list[type]}}是<b>{{input}}</b>的搜索结果</h4>
+          <h4 class="text-left">{{list[type]}}是<b>{{searchKeyWord}}</b>的搜索结果</h4>
         </b-col>
       </b-row>
       <b-row>
@@ -34,8 +34,8 @@
           <template slot="index" slot-scope="data">
             {{data.index+1}}
           </template>
-          <template slot="name" slot-scope="data">
-            <b-link :to="{name:'book',params:{id:data.item.id}}">{{data.value}}</b-link>
+          <template slot="bookname" slot-scope="data">
+            <b-link :to="{name:'book',params:{id:data.item.bookid}}">{{data.value}}</b-link>
           </template>
         </b-table>
       </b-row>

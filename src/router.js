@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Book from './views/BooksInfo.vue'
 import Outer from './views/OuterPage.vue'
 Vue.use(Router)
 
@@ -23,7 +24,7 @@ export default new Router({
       path:'/book/:id',
       name:'book',
       props:true,
-      component:()=>import('./views/BooksInfo.vue')
+      component:Book
     },{
       path:'/:name',
       name:'outer',
