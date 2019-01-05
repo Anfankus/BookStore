@@ -71,7 +71,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <div class="footer"/>
   </div>
 
 </template>
@@ -179,11 +178,6 @@ export default {
     position: inherit;
     padding: 2rem 0 9rem 0;
   }
-}
-.footer{
-  margin: 3rem auto 0 auto;
-  height: 1rem; 
-  background-color: #eee;
 }
 </style>
 

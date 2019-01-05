@@ -5,9 +5,9 @@
       <b-navbar-brand to="/" class="ml-5">网上书店</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item href="#">关于</b-nav-item>
-          <b-nav-item href="#">Q&A</b-nav-item>
-          <b-nav-item href="#">联系我们</b-nav-item>
+          <b-nav-item :to="{name:'outer',params:{name:'about'}}">关于</b-nav-item>
+          <b-nav-item :to="{name:'outer',params:{name:'FAQ'}}">Q&A</b-nav-item>
+          <b-nav-item :to="{name:'outer',params:{name:'contact'}}">联系我们</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-form >
@@ -37,6 +37,7 @@
     <div class="wrapper">
       <router-view/>
     </div>
+    <div class="footer"/>
   </div>
 </template>
 
@@ -94,6 +95,7 @@ export default {
   z-index: 3;
 }
 .wrapper{
+  min-height: 90vh;
   padding-top: 4rem!important;
 }
 .cart{
@@ -105,6 +107,12 @@ export default {
   border:white solid;
   border-radius: 8px!important;
 }
+.footer{
+  margin: 3rem auto 0 auto;
+  height: 1rem; 
+  background-color: #eee;
+}
+
 .slide-fade-enter-active {
   transition: all .3s ease;
 }

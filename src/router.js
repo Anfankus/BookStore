@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import SignIn from './views/SignIn.vue'
-import SignUp from './views/SignUp.vue'
-import Book from './views/BooksInfo.vue'
+import Outer from './views/OuterPage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -14,23 +12,23 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    },
-    {
       path:'/signin',
       name:'signIn',
-      component:SignIn
+      component:()=>import('./views/SignIn.vue')
     },{
       path:'/signup',
       name:'signUp',
-      component:SignUp
+      component:()=>import('./views/SignUp.vue')
     },{
       path:'/book/:id',
       name:'book',
       props:true,
-      component:Book
+      component:()=>import('./views/BooksInfo.vue')
+    },{
+      path:'/:name',
+      name:'outer',
+      props:true,
+      component:Outer
     }
   ]
 })
