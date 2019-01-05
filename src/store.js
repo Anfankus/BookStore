@@ -21,7 +21,12 @@ export default new Vuex.Store({
   },
   mutations: {
     pushProductToCart (state, { bookid , bookname, price , quantity}) {
-      state.items.push({bookid,bookname,price,quantity})
+      let inner=state.items.find(item=>item.bookid === bookid);
+      if(inner){
+        inner.quantity+=quantity;
+      }
+      else 
+        state.items.push({bookid,bookname,price,quantity})
     },
     incrementItemQuantity (state,  bookid ) {
       const cartItem = state.items.find(item => item.bookid === bookid)

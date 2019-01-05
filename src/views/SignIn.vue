@@ -11,9 +11,9 @@
                     <b-form-input id='pwd' required v-model="form.password" type="password" placeholder="请输入密码"/>
                 </b-form-group>
                 <div v-if="result">
-                <b-alert style="height:2rem" :variant="result.ret?'success':'danger'" show>
+                <b-alert style="height:2rem" :variant="result.result?'success':'danger'" show>
                   <p style="position:relative;top:-0.3rem;font-size:0.8rem">
-                    登陆{{result.ret?'成功':'失败'}}:
+                    登陆{{result.result?'成功':'失败'}}:
                     <b>{{result.msg}}</b>
                   </p>
                 </b-alert>
@@ -69,7 +69,9 @@ export default {
             this.result=ret.data;
             if(this.result.result){
               Cookies.set('user',this.form.username,{path:'/'});
-              location.replace('/')
+              setTimeout(() => {
+                location.replace('/')
+              }, 2000);
             }
         }
     }

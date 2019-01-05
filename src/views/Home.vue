@@ -20,13 +20,26 @@
         </b-input-group>
       </div>
       <div id='bottom'>
-        <b>热门搜索：西游记 史记</b>
+        <b>热门搜索:
+          <b-link to="/book/2">浮生六记</b-link>
+          <b-link to="/book/8">西游记 </b-link>
+          <b-link to="/book/12">史记</b-link>
+        </b>
+        <br/>
+        <b>标签搜索:
+          <span 
+          style="cursor:pointer"
+          class="text-warning"
+          v-for="each in bookClass"
+          :key="each"
+          @click="search({type:'classname',input:each})">{{each}} </span>
+        </b>
       </div>
     </div>
     <b-container v-if="datas.books.length" id="results" class="mt-3">
       <b-row >
         <b-col col offset=1>
-          <h4 class="text-left">{{list[type]}}是<b>{{searchKeyWord}}</b>的搜索结果</h4>
+          <h4 class="text-left">{{list[searchType]}}是<b>{{searchInput}}</b>的搜索结果</h4>
         </b-col>
       </b-row>
       <b-row>
@@ -83,13 +96,15 @@ export default {
   },
   data(){
     return{
+      searchType:null,
+      searchInput:null,
       input:null,
-      searchKeyWord:null,
       type:'bookname',
       list:{
         author:'作者',
         bookname:'书名',
-        bookid:'编号'
+        bookid:'编号',
+        classname:'类别'
       },
       datas:{
         page:1,
@@ -101,7 +116,8 @@ export default {
         {key:'bookname',label:'书名'},
         {key:'author',label:'作者'},
         {key:'price',label:'单价'}
-      ]
+      ],
+      bookClass:['文学','历史','哲学','心理学','亲子','计算机','艺术','外语','医学','传记']
     }
   },
   computed:{
@@ -125,7 +141,8 @@ export default {
         }
       })
       this.datas.books=ret.data;
-      this.searchKeyWord=input;
+      this.searchType=type;
+      this.searchInput=input;
     },
     jumpTo(page){
      return page+1;
@@ -178,7 +195,7 @@ export default {
   }
   &>#bottom{
     position: inherit;
-    padding: 2rem 0 9rem 0;
+    padding: 2rem 0 7rem 0;
   }
 }
 </style>

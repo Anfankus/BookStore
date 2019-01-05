@@ -23,6 +23,9 @@
             <b-col col>类别:</b-col>
             <b-col col>{{book.classname}}</b-col>
             <div class="w-100"/>
+            <b-col col>库存状态:</b-col>
+            <b-col col :class="getQuantityStatus.class">{{getQuantityStatus.msg}}</b-col>
+            <div class="w-100"/>
             <b-col col>价格:</b-col>
             <b-col col class="text-primary">￥{{book.price}}</b-col>
           </b-row>
@@ -70,6 +73,24 @@ export default {
   computed:{
     total(){
       return this.count*this.book.price;
+    },
+    getQuantityStatus(){
+      let className,msg;
+      if(!this.ready) return{class:className,msg};
+      if(this.book.quantity>30){
+        className='text-success';
+        msg='五天内送至';
+      }else if(this.book.quantity>10){
+        className='text-warning';
+        msg='十天内送至';
+      }else if(this.book.quantity>0){
+        className='text-info';
+        msg='十五天内送至';
+      }else{
+        className='text-danger';
+        msg='二十天内送至';
+      }
+      return{class:className,msg};
     }
   },
   methods:{

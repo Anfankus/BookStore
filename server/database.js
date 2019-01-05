@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '123456',
+    password: '',
     port: '3306',
     database: 'BookStore',
     multipleStatements: true
@@ -131,7 +131,7 @@ function search(type, content) {
                 break;
 
             case 4:
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  classid='${content}';`;
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  classInfo.cname='${content}';`;
                 connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);

@@ -20,7 +20,7 @@ router
       content=query.author;}
     else{
       type=4;
-      content=query.class;
+      content=query.classname;
     }
     
     await database.search(type,content).then(real=>{
