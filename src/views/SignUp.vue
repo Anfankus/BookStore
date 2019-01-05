@@ -97,7 +97,7 @@ export default {
             if(this.result.result){
               this.result.result+=",页面将在3秒后跳转至登录页"
               setTimeout(() => {
-                location.replace('/signin')
+                location.replace('/signIn')
               }, 200);
             }
         }
