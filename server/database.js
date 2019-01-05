@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
+    password: '123456',
     port: '3306',
     database: 'BookStore',
     multipleStatements: true
@@ -20,16 +20,20 @@ function BookInfo(rowdata) {
     this.classname = rowdata.cname;
 }
 
-function Item() {
-    this.bookid = 1;
+function Item(id) {
+    this.bookid = id;
     this.quantity = 3;
 }
 
 //获取日期
+// function date() {
+//     let a = new Date().toLocaleDateString().split('/');
+//     return a[2]+'-'+a[0]+'-'+a[1];
+// }
 function date() {
-    return new Date().toLocaleDateString()
+    let a = new Date().toLocaleDateString().split('/');
+    return a;
 }
-
 /**
  * 登录 param(用户名)
  * 用户名存在，返回密码
@@ -166,25 +170,29 @@ function searchBookInfo(id) {
 
 //这个你不需要调用
 function handleBookOrders(user, item) {
-    return new Promise(function(resolve, rejected) {
+    return new Promise(function (resolve, rejected) {
+
         var sql = `SELECT oid FROM orders WHERE username='${user}'`;
-        connection.query(sql, function(err, result) {
+        connection.query(sql, function (err, result) {
             if (err) {
                 console.log('[INSERT ERROR] - ', err.message);
                 resolve(false);
             } else {
-                var addSql = `BEGIN;INSERT INTO bookorder(oid,bid,amount) VALUES(?,?,?);UPDATE bookInfo SET quantity=quantity-${item.quantity} WHERE bid=${item.bookid};COMMIT;`;
-                var addpara = [result[0].oid, item.bookid, item.quantity];
-                connection.query(addSql, addpara, function(err, result) {
-                    if (err) {
-                        console.log('[INSERT ERROR] - ', err.message);
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
-                });
+                for (var i = 0; i < item.length; i++) {
+                    var addSql = `BEGIN;INSERT INTO bookorder(oid,bid,amount) VALUES(?,?,?);UPDATE bookInfo SET quantity=quantity-${item[i].quantity} WHERE bid=${item[i].bookid};COMMIT;`;
+                    var addpara = [result[0].oid, item[i].bookid, item[i].quantity];
+                    connection.query(addSql, addpara, function (err, result) {
+                        if (err) {
+                            console.log('[INSERT ERROR] - ', err.message);
+                            resolve(false);
+                        }
+                    });
+                }
+                resolve(true);
             }
         });
+
+
     });
 }
 
@@ -194,8 +202,8 @@ function handleBookOrders(user, item) {
  *  */
 function handleOrders(username, item, total) {
     return new Promise(function(resolve, rejected) {
-        var addsql1 = `INSERT INTO orders(username,paymoney,deliverytime,arrivaltime,orderstatus) VALUES(?,?,?,?,?);`;
-        var addpara1 = [username, total, date(), date(), 0];
+        let addsql1 = `INSERT INTO orders(username,paymoney,deliverytime,arrivaltime,orderstatus) VALUES(?,?,?,?,?);`;
+        let addpara1 = [username, total, date(), date(), 0];
         connection.query(addsql1, addpara1, function(err, result) {
             if (err) {
                 console.log('[INSERT ERROR] - ', err.message);
@@ -210,6 +218,7 @@ function handleOrders(username, item, total) {
         });
     });
 }
+
 
 module.exports = {
     signin: signin,
