@@ -31,7 +31,7 @@ function Item(id) {
 //     return a[2]+'-'+a[0]+'-'+a[1];
 // }
 function date() {
-    let a = new Date().toLocaleDateString().split('/');
+    let a = new Date().toLocaleDateString().replace('/','-');
     return a;
 }
 /**
