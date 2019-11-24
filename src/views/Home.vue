@@ -44,10 +44,10 @@
       </b-row>
       <b-row>
         <b-table :items="datas.books" :fields="fields">
-          <template slot="index" slot-scope="data">
+          <template v-slot:cell(index)="data">
             {{data.index+1}}
           </template>
-          <template slot="bookname" slot-scope="data">
+          <template v-slot:cell(bookname)="data">
             <b-link :to="{name:'book',params:{id:data.item.bookid}}">{{data.value}}</b-link>
           </template>
         </b-table>
