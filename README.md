@@ -1,17 +1,16 @@
 # OnlineBookStore
-## 安装依赖
+## pre-build
 ```bash
 npm install
 ```
-## 前端
+## front end
 ```bash
-#热重载，开发模式
+# hot-reload, develop environment
 npm run serve 
-#生产环境
+# build environment
 npm run build
 ```
-## 后端
+## back end
 ```bash
-#热重载 后端需先手动运行一次 npm run build
 npm start
 ```
