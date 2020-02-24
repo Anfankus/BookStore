@@ -12,6 +12,8 @@ const signup=require('./api/signup');
 const search=require('./api/search');
 const book=require('./api/book');
 const checkout=require('./api/checkout');
+const comment = require('./api/comment');
+const publish = require('./api/publish-book');
 
 // error handler
 onerror(app)
@@ -30,6 +32,8 @@ app.use(signup.routes(), signup.allowedMethods())
 app.use(search.routes(), search.allowedMethods())
 app.use(book.routes(), book.allowedMethods())
 app.use(checkout.routes(), checkout.allowedMethods())
+app.use(comment.routes(), comment.allowedMethods())
+app.use(publish.routes(), publish.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

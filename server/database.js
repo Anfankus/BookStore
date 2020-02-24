@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
+    password: 'abckeke123',
     port: '3306',
     database: 'BookStore',
     multipleStatements: true
@@ -31,7 +31,7 @@ function Item(id) {
 //     return a[2]+'-'+a[0]+'-'+a[1];
 // }
 function date() {
-    let a = new Date().toLocaleDateString().replaceAll(/\//,'-');
+    let a = new Date().toLocaleDateString().split('/').join('-');
     return a;
 }
 /**
@@ -219,11 +219,79 @@ function handleOrders(username, item, total) {
     });
 }
 
+function publishBook(bookname,author,price,quantity,classid) {
+    return new Promise(function(resolve, rejected) {
+        let addsql1 = `INSERT INTO 
+        bookInfo(bname,author,price,quantity,classid) 
+        VALUES(?,?,?,?,?);`;
+        let addpara1 = [bookname,author,price,quantity,classid];
+        connection.query(addsql1, addpara1, function(err, result) {
+            if (err) {
+                console.log('[INSERT BOOK ERROR 1] - ', err);
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
 
+}
+
+function searchComments(bookid){
+    return new Promise(function(resolve, rejected) {
+        var sql = `SELECT bid,username,commentdate,comment FROM comments WHERE bid=${bookid};`;
+        connection.query(sql, function(err, result) {
+            if (err) {
+                console.log('[SELECT ERROR] - ', err);
+                rejected(err);
+            }else{
+                resolve(result);
+            }
+        });
+    });
+}
+
+function publishComment(bookid,username,comment) {
+    return new Promise(function(resolve, rejected) {
+        let addsql1 = `INSERT INTO 
+        comments(bid,username,commentdate,comment) 
+        VALUES(?,?,?,?);`;
+        let addpara1 = [bookid,username,date(),comment];
+        connection.query(addsql1, addpara1, function(err, result) {
+            if (err) {
+                console.log('[INSERT BOOK ERROR 1] - ', err);
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+
+}
+function publishBook(bookname,author,price,quantity,classid){
+    return new Promise(function(resolve, rejected) {
+        let addsql1 = `INSERT INTO 
+        bookInfo(bname,author,price,quantity,classid) 
+        VALUES(?,?,?,?,?);`;
+        let addpara1 = [bookname,author,price,quantity,classid];
+        connection.query(addsql1, addpara1, function(err, result) {
+            if (err) {
+                console.log('[INSERT BOOK ERROR 1] - ', err);
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
 module.exports = {
     signin: signin,
     signup: signup,
     search: search,
     searchBookInfo: searchBookInfo,
-    handleOrders: handleOrders
+    handleOrders: handleOrders,
+    publishBook,
+    publishComment,
+    searchComments,
+    publishBook
 }

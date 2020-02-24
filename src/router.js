@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Book from './views/BooksInfo.vue'
 import Outer from './views/OuterPage.vue'
+import PublishBook from './views/PublishBook.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +32,11 @@ export default new Router({
       name:'outer',
       props:true,
       component:Outer
+    },
+    {
+      path:'/publish',
+      name:'publishBook',
+      component:PublishBook
     }
   ]
 })

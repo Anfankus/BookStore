@@ -147,6 +147,21 @@ CREATE TABLE `orders`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments`  (
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
+  `bid` int(11) NOT NULL,
+  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `commentdate` date NULL DEFAULT NULL,
+  `comment` varchar(50),
+  PRIMARY KEY (`cid`) USING BTREE,
+  INDEX `username`(`username`) USING BTREE,
+  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`username`) REFERENCES `userInfo` (`username`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`bid`) REFERENCES `bookInfo` (`bid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+-- ----------------------------
 -- Table structure for userInfo
 -- ----------------------------
 DROP TABLE IF EXISTS `userInfo`;

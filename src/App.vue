@@ -21,6 +21,7 @@
           <b-button size="sm" class="mx-1" to="/signIn" v-if="!ifLogin">登陆</b-button>
           <b-button size="sm" class="mx-1" to="/signUp" v-if="!ifLogin">注册</b-button>
           <b-button size="sm" class="mx-1" @click="logout" v-if="ifLogin">登出</b-button>
+          <b-button size="sm" class="mx-1" @click="publishBook" v-if="ifLogin" >发布书籍</b-button>
           <b-button variant="danger" size="sm" class="mx-1" right v-if="ifLogin">{{username}}</b-button>
           <b-btn size="sm"
           class="ml-1 mr-1" 
@@ -77,6 +78,9 @@ export default {
     logout(){
       Cookies.remove('user');
       location.replace('/');
+    },
+    publishBook(){
+      this.$router.push({name:"publishBook"})
     }
   },
   components:{

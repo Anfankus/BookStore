@@ -1,6 +1,6 @@
 <template>
 <b-container class="bookContainer mt-5 shadow">
-  <b-row>
+  <b-row class="border-bottom">
     <b-col v-if="!ready">加载中</b-col>
     <b-col v-else>
       <b-row class="header text-light py-2">
@@ -57,17 +57,67 @@
       </b-row>
     </b-col>
   </b-row>
+  <div v-if="ready" class="mt-2 ml-3">
+    <b-row class="ml-1">
+      <h2>评论区</h2>
+    </b-row>
+    <b-list-group class="w-100">
+      <b-list-group-item v-for="(value,key) in comments" :key="key" class="flex-column align-items-start border rounded my-1">
+        <div class="d-flex w-100 justify-content-between ">
+          <h5 class="mb-1">{{value.username}}</h5>
+          <small>{{new Date(value.commentdate).toLocaleDateString()}}</small>
+        </div>
+        <p class="mb-1 text-left">
+          {{value.comment}}
+        </p>
+      </b-list-group-item>
+    </b-list-group>
+    <b-row >
+        <b-form @submit="onSubmit" class="w-100 mx-3 text-left my-3">
+        <b-form-group
+          id="input-group-1"
+          label="发表评论"
+          label-for="input-1"
+          description="评论字数在300字以内"
+        >
+          <b-form-input
+            id="msg-1"
+            v-model="form.comment"
+            required
+            placeholder="输入评论"
+          ></b-form-input>
+        </b-form-group>
+        <b-button type="submit" variant="primary">提交</b-button>
+      </b-form>
+    </b-row>
+  </div>
 </b-container>
 </template>
 <script>
 import axios from 'axios';
+import cookies from 'js-cookie'
 export default {
   props:['id'],
   data(){
     return{
       ready:false,
       book:null,
-      count:0
+      count:0,
+      comments:[
+        {
+          username:"aaabbb",
+          commentdate:(new Date).toLocaleString(),
+          comment:"这是一条评论"
+        },
+        {
+          username:"aaabbb",
+          commentdate:(new Date).toLocaleString(),
+          comment:"这是一条评论"
+        }
+      ],
+      form:{
+        comment:""
+      }
     }
   },
   computed:{
@@ -95,20 +145,45 @@ export default {
   },
   methods:{
     async updateInfo(){
-      let result=await axios.get('/book',{
-        params:{
-          bookid:this.id
-        }
-      });
-      if(result.data){
-        this.book=result.data;
-        this.ready=true;
-      }
+      await Promise.all([
+        axios.get('/book',{
+          params:{
+            bookid:this.id
+          }
+        }).then(data=>data.data),
+        axios.get('/comment',{
+          params:{bid:this.id}
+        }).then(data=>data.data)
+      ]).then(([book,comments])=>{
+        this.book = book;
+        this.comments = comments;
+        this.ready = true;
+      }).catch(console.log);
     },
     addToCart(){
       let {bookid,bookname,price}=this.book;
       let quantity=this.count;
       this.$store.commit('pushProductToCart',{bookid,bookname,price,quantity});
+    },
+    async onSubmit(){
+      let username = cookies.get("user");
+      if(!username){
+        this.$router.push({name:'signIn'})
+        return;
+      }
+      await axios.post("/comment",{
+        ...this.form,
+        bid:this.id,
+        date:(new Date).toLocaleString(),
+        username:username
+      }).then(({data})=>{
+        if(data.result){
+          this.form.comment = "";
+          this.updateInfo();
+        }else{
+          alert(data.msg);
+        }
+      }).catch(console.log);
     }
   },
   mounted(){
