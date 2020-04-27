@@ -3,23 +3,23 @@
     <b-row>
       <b-col cols class="cartcontent">
         <b-table :items="items"  :fields="fields" class="mt-2">
-          <template slot="index" slot-scope="data">
+          <template v-slot:cell(index)="data">
               {{data.index+1}}
           </template>
-          <template slot="bookid" slot-scope="data">
+          <template v-slot:cell(bookid)="data">
               <b-link :to="{name:'book',params:{id:data.value}}">{{data.value}}</b-link>
           </template>
-          <template slot="bookname" slot-scope="data">
+          <template v-slot:cell(bookname)="data">
               <b-link :to="{name:'book',params:{id:data.item.bookid}}">{{data.value}}</b-link>
           </template>
-          <template slot="quantity" slot-scope="data">
+          <template v-slot:cell(quantity)="data">
             <b-input-group>
               <b-button class="little-btn" size="sm" slot="prepend" @click="add(data.item.bookid)">+</b-button>
               <span style="width:2rem">{{data.value}}</span>
               <b-button class="little-btn" size="sm" slot="append" @click="substract(data.item.bookid)">-</b-button>
             </b-input-group>
           </template>
-          <template slot="total" slot-scope="data">
+          <template v-slot:cell(total)="data">
               {{data.item.price*data.item.quantity}}
           </template>
         </b-table>
