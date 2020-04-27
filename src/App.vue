@@ -21,11 +21,13 @@
           <b-button size="sm" class="mx-1" to="/signIn" v-if="!ifLogin">登陆</b-button>
           <b-button size="sm" class="mx-1" to="/signUp" v-if="!ifLogin">注册</b-button>
           <b-button size="sm" class="mx-1" @click="logout" v-if="ifLogin">登出</b-button>
+          <b-btn size="sm" class="mx-1" @click="show(1)" >热销书籍</b-btn>
           <b-button size="sm" class="mx-1" @click="publishBook" v-if="ifLogin" >发布书籍</b-button>
+          <b-btn size="sm" class="mx-1" @click="show(2) " v-if="ifLogin">我的订单</b-btn>
           <b-button variant="danger" size="sm" class="mx-1" right v-if="ifLogin">{{username}}</b-button>
           <b-btn size="sm"
           class="ml-1 mr-1" 
-          @click="showCart=!showCart" 
+          @click="show(3)" 
           variant="warning text-white">
           购物车
             <b-badge variant="light">{{$store.state.items.length}}</b-badge>
@@ -35,6 +37,12 @@
     </b-navbar>
     <transition  name="slide-fade">
       <cart v-show="showCart" class="cart shadow"/>
+    </transition>
+    <transition  name="slide-fade">
+      <orderList v-show="showOrder" class="cart shadow"/>
+    </transition>
+    <transition  name="slide-fade">
+      <rankList v-show="showRank" class="cart shadow"/>
     </transition>
     <div class="wrapper">
       <router-view/>
@@ -46,10 +54,14 @@
 <script>
 import Cookies from 'js-cookie'
 import Cart from '@/components/Cart'
+import OrderList from '@/components/OrderList'
+import RankList from '@/components/RankList'
 export default {
   data(){
     return{
       showCart:false,
+      showOrder:false,
+      showRank:false,
       input:null
     }
   },
@@ -67,6 +79,21 @@ export default {
     }
   },
   methods:{
+    show(num){
+      if(num===1){
+        this.showCart = !this.showCart;
+        this.showOrder = false;
+        this.showRank = false;
+      }else if(num===2){
+        this.showCart = false;
+        this.showOrder = !this.showOrder;
+        this.showRank = false;
+      }else if(num===3){
+        this.showCart = false;
+        this.showOrder = false;
+        this.showRank = !this.showRank;
+      }
+    },
     emitSearch(){
       if(!this.input)
         return;
@@ -84,7 +111,9 @@ export default {
     }
   },
   components:{
-    cart:Cart
+    cart:Cart,
+    rankList:RankList,
+    orderList:OrderList
   }
 }
 </script>

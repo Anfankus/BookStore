@@ -8,8 +8,8 @@ router
   .prefix('/publish-book')
   .post('/', async (ctx) => {
     let {body}=ctx.request;
-    let {bookname,author,price,quantity,classid} = body;
-    await database.publishBook(bookname,author,price,quantity,classid).then(ret=>{
+    let {bookname,author,price,quantity,classid,username} = body;
+    await database.publishBook(bookname,author,price,quantity,classid,username).then(ret=>{
       if(ret){
         ctx.body={
           result:true,

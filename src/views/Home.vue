@@ -115,9 +115,10 @@ export default {
         {key:'index',label:'序号'},
         {key:'bookname',label:'书名'},
         {key:'author',label:'作者'},
+        {key:'username',label:'发布者'},
         {key:'price',label:'单价'}
       ],
-      bookClass:['文学','历史','哲学','心理学','亲子','计算机','艺术','外语','医学','传记']
+      bookClass:['数学','历史','外语','自动化','信息','计算机','艺术','医学','经济管理','电子']
     }
   },
   computed:{

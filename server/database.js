@@ -18,6 +18,7 @@ function BookInfo(rowdata) {
     this.price = rowdata.price;
     this.quantity = rowdata.quantity;
     this.classname = rowdata.cname;
+    this.username = rowdata.username;
 }
 
 function Item(id) {
@@ -86,7 +87,7 @@ function search(type, content) {
         var array = [];
         switch (type) {
             case 1: //按照id查询
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  bid=${content};`;
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname,bookInfo.username FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  bid=${content};`;
                 connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
@@ -100,7 +101,7 @@ function search(type, content) {
                 break;
 
             case 2: //按照书名查询
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname,bookInfo.username
                 FROM bookInfo,classInfo
                 WHERE bookInfo.classid=classInfo.cid and bname REGEXP '${content}';`;
                 connection.query(sql, function(err, result) {
@@ -116,7 +117,7 @@ function search(type, content) {
                 break;
 
             case 3: //
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname,bookInfo.username
                 FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and author REGEXP '${content}';`;
                 connection.query(sql, function(err, result) {
                     if (err) {
@@ -131,7 +132,7 @@ function search(type, content) {
                 break;
 
             case 4:
-                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  classInfo.cname='${content}';`;
+                var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname,bookInfo.username FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and  classInfo.cname='${content}';`;
                 connection.query(sql, function(err, result) {
                     if (err) {
                         console.log('[SELECT ERROR] - ', err.message);
@@ -154,7 +155,7 @@ function search(type, content) {
  *  */
 function searchBookInfo(id) {
     return new Promise(function(resolve, rejected) {
-        var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and bid=${id};`;
+        var sql = `SELECT bid,bname,author,price,quantity,classInfo.cname,bookInfo.username FROM bookInfo,classInfo WHERE bookInfo.classid=classInfo.cid and bid=${id};`;
         connection.query(sql, function(err, result) {
             if (err) {
                 console.log('[SELECT ERROR] - ', err.message);
@@ -219,12 +220,12 @@ function handleOrders(username, item, total) {
     });
 }
 
-function publishBook(bookname,author,price,quantity,classid) {
+function publishBook(bookname,author,price,quantity,classid,username) {
     return new Promise(function(resolve, rejected) {
         let addsql1 = `INSERT INTO 
-        bookInfo(bname,author,price,quantity,classid) 
-        VALUES(?,?,?,?,?);`;
-        let addpara1 = [bookname,author,price,quantity,classid];
+        bookInfo(bname,author,price,quantity,classid,username) 
+        VALUES(?,?,?,?,?,?);`;
+        let addpara1 = [bookname,author,price,quantity,classid,username];
         connection.query(addsql1, addpara1, function(err, result) {
             if (err) {
                 console.log('[INSERT BOOK ERROR 1] - ', err);

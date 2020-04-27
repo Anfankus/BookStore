@@ -75,6 +75,7 @@
 </template>
 <script>
 import axios from 'axios';
+import cookies from 'js-cookie'
 export default {
   data(){
     return{
@@ -109,7 +110,8 @@ export default {
       async publish(){
           console.log(this.form);
           await axios.post("/publish-book",{
-              ...this.form
+              ...this.form,
+              username:cookies.get('user')
           }).then(({data})=>{
               this.ret=true;
               this.result.result=true;

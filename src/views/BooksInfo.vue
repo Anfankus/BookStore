@@ -23,8 +23,8 @@
             <b-col col>类别:</b-col>
             <b-col col>{{book.classname}}</b-col>
             <div class="w-100"/>
-            <b-col col>库存状态:</b-col>
-            <b-col col :class="getQuantityStatus.class">{{getQuantityStatus.msg}}</b-col>
+            <b-col col>库存数量:</b-col>
+            <b-col col :class="getQuantityStatus.class">{{this.book.quantity}}</b-col>
             <div class="w-100"/>
             <b-col col>价格:</b-col>
             <b-col col class="text-primary">￥{{book.price}}</b-col>

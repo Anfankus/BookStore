@@ -71,6 +71,7 @@ export default {
     },
     checkout () {
       this.$store.dispatch('checkout')
+      this.$eventHub.$emit('updateOrder',this.items);
     },
     ...mapMutations({
         add:'incrementItemQuantity',
