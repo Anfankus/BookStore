@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    password: 'abckeke123',
+    password: '123456',
     port: '3306',
     database: 'BookStore',
     multipleStatements: true
@@ -221,6 +221,7 @@ function handleOrders(username, item, total) {
 }
 
 function publishBook(bookname,author,price,quantity,classid,username) {
+        console.log(classid,username)
     return new Promise(function(resolve, rejected) {
         let addsql1 = `INSERT INTO 
         bookInfo(bname,author,price,quantity,classid,username) 
@@ -269,22 +270,6 @@ function publishComment(bookid,username,comment) {
     });
 
 }
-function publishBook(bookname,author,price,quantity,classid){
-    return new Promise(function(resolve, rejected) {
-        let addsql1 = `INSERT INTO 
-        bookInfo(bname,author,price,quantity,classid) 
-        VALUES(?,?,?,?,?);`;
-        let addpara1 = [bookname,author,price,quantity,classid];
-        connection.query(addsql1, addpara1, function(err, result) {
-            if (err) {
-                console.log('[INSERT BOOK ERROR 1] - ', err);
-                resolve(false);
-            } else {
-                resolve(true);
-            }
-        });
-    });
-}
 module.exports = {
     signin: signin,
     signup: signup,
@@ -294,5 +279,4 @@ module.exports = {
     publishBook,
     publishComment,
     searchComments,
-    publishBook
 }

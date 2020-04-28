@@ -31,7 +31,7 @@ CREATE TABLE `bookInfo`  (
   `price` double NOT NULL,
   `quantity` int(10) UNSIGNED NOT NULL,
   `classid` int(11) NOT NULL,
-  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`bid`) USING BTREE,
   INDEX `classid`(`classid`) USING BTREE,
   INDEX `bname`(`bname`, `author`) USING BTREE,

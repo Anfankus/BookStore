@@ -70,8 +70,8 @@ export default {
         this.$store.commit('setCartItems',{items:[]})
     },
     checkout () {
-      this.$store.dispatch('checkout')
       this.$eventHub.$emit('updateOrder',this.items);
+      this.$store.dispatch('checkout')
     },
     ...mapMutations({
         add:'incrementItemQuantity',

@@ -80,7 +80,7 @@ export default {
   },
   methods:{
     show(num){
-      if(num===1){
+      if(num===3){
         this.showCart = !this.showCart;
         this.showOrder = false;
         this.showRank = false;
@@ -88,7 +88,7 @@ export default {
         this.showCart = false;
         this.showOrder = !this.showOrder;
         this.showRank = false;
-      }else if(num===3){
+      }else if(num===1){
         this.showCart = false;
         this.showOrder = false;
         this.showRank = !this.showRank;

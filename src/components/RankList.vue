@@ -31,10 +31,11 @@ export default {
                 {key:'ordernum',label:'订购本数'}
             ],
             items:[
-                {bookname:'第一本书',bookid:1,ordernum:201},
-                {bookname:'第二本书',bookid:11,ordernum:200},
-                {bookname:'第三本书',bookid:12,ordernum:141},
-                {bookname:'第四本书',bookid:13,ordernum:32},
+                {bookname:'机器学习',bookid:38,ordernum:201},
+                {bookname:'本草纲目',bookid:46,ordernum:200},
+                {bookname:'中国哲学简史',bookid:25,ordernum:141},
+                {bookname:'Python编程入门到实践',bookid:36,ordernum:32},
+                {bookname:'心理学与生活',bookid:31,ordernum:32},
             ]
         }
     },
