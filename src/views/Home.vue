@@ -4,7 +4,7 @@
       <div id='curtain'/>
       <div id="top">
         <h1 >寻找你的书</h1>
-        <h4>超过30000本书收录在内</h4>
+        <h4>读书破万卷，下笔如有神</h4>
       </div>
       <div id="form">
         <b-input-group size="lg" >
