@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.1.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "js-cookie": "^2.2.0",
     "jshint": "^2.10.3",
     "koa": "^2.6.2",
