@@ -40,7 +40,7 @@
               <b-input-group>
                 <b-button class="little-btn" size="sm" :disabled="count<=0" @click="count--">-</b-button>
                 <span style="width:2rem">{{count}}</span>
-                <b-button class="little-btn" size="sm"  @click="count++">+</b-button>
+                <b-button class="little-btn" size="sm" :disabled="count>=this.book.quantity"  @click="count++">+</b-button>
               </b-input-group>
             </b-col>
             <div class="w-100 my-1"/>
@@ -53,8 +53,9 @@
           </b-row>
           <b-row class="">
             <b-col cols="6">
-              <b-btn style="width:100%" @click="addToCart" variant="success">添加至购物车</b-btn>
-            </b-col>
+              <b-btn v-if="this.book.quantity>0" style="width:100%"  :disabled="count<=0" @click="addToCart" variant="success">添加至购物车</b-btn>
+              <b-btn v-else style="width:100%" variant="secondary" disabled>已售罄</b-btn>
+           </b-col>
           </b-row>
         </b-col>
       </b-row>
@@ -167,6 +168,7 @@ export default {
       let {bookid,bookname,price}=this.book;
       let quantity=this.count;
       this.$store.commit('pushProductToCart',{bookid,bookname,price,quantity});
+      this.updateInfo();
     },
     async onSubmit(){
       let username = cookies.get("user");

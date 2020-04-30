@@ -48,7 +48,7 @@ export default {
 
     methods:{
         onUpdateOrder(data){
-            this.items = data
+            this.items.push(...data)
         }
     }
 }

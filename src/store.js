@@ -61,24 +61,24 @@ export default new Vuex.Store({
       commit('setMsg',null);
       commit('setCartItems', { items: [] });
 
-      // let ret =await axios.post('/checkout',{
-      //   username:user,
-      //   order:savedCartItems.map(each=>{return{bookid:each.bookid,quantity:each.quantity}}),
-      //   total
-      // }).catch(()=>false);
-      // if(!ret){
-      //   commit('setCartItems', { items: savedCartItems });
-      //   commit('setCheckoutStatus',false);
-      //   commit('setMsg','连接服务器错误');
-      //   return;
-      // }else if(!ret.data.result){
-      //   commit('setCartItems', { items: savedCartItems });
-      //   commit('setCheckoutStatus',false);
-      //   commit('setMsg',ret.data.msg);
-      // }else{
+      let ret =await axios.post('/checkout',{
+        username:user,
+        order:savedCartItems.map(each=>{return{bookid:each.bookid,quantity:each.quantity}}),
+        total
+      }).catch(()=>false);
+      if(!ret){
+        commit('setCartItems', { items: savedCartItems });
+        commit('setCheckoutStatus',false);
+        commit('setMsg','连接服务器错误');
+        return;
+      }else if(!ret.data.result){
+        commit('setCartItems', { items: savedCartItems });
+        commit('setCheckoutStatus',false);
+        commit('setMsg',ret.data.msg);
+      }else{
         commit('setCheckoutStatus',true);
         commit('setMsg','成功');
-      // }
+      }
     }
   }
 })
